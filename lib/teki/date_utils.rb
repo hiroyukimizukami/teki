@@ -1,6 +1,8 @@
 module Teki
   class DateUtils
 
+    HOUR = 3600
+
     def self.iterate_time(range, step, &block)
       current = range.begin
       while current <= range.end

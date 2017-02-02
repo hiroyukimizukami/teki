@@ -28,5 +28,8 @@ module Teki
   # istance_count: 1 or even integer
   # time_range:
   class Schedule < ::Value.new(:instance_count, :time_range)
+    def self.create(instance_count:, time_range:)
+      with(instance_count: instance_count, time_range: time_range)
+    end
   end
 end

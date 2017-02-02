@@ -47,17 +47,17 @@ Aws::OpsWorks::Client#set_time_based_auto_scaling(instance_id: String, auto_scal
       "mon": [
         {
           "count": 1,
-          "time": [0, 1, 2, 3],
+          "time_range": 0-9,
         },
         {
           "count": 2,
-          "time": [22, 23],
+          "time_range": 22-23,
         }
       ]
       "mon": [
         {
           "count": 4,
-          "time": [10, 11, 23],
+          "time_range": 18-23,
         }
       ]
     }
@@ -65,3 +65,45 @@ Aws::OpsWorks::Client#set_time_based_auto_scaling(instance_id: String, auto_scal
 }
 
 ```
+
+---
+
+# Memo
+
+
+mon 5:0-23 -> sun 5:15-23, mon 5:0-9
+sun 5:0-23 -> sat 5:15-23, sun 5:0-9
+
+# 入力
+mon: {count, time_range} (JST)
+
+# TimeRangeをいてレートしながらUTCに変換し、時までの時刻オブジェクトをキー、インスタンス数を値としたハッシュにする
+# キーが値的に重複している場合は、インスタンス数を加算する
+{time_hour, count} (UTC)
+
+{count, wday, hour} (UTC)
+wday で group by
+
+wday: 0 =
+{count: 1, hour:0}
+{count: 4, hour:0}
+{count: 4, hour:1}
+{count: 4, hour:2}
+{count: 4, hour:3}
+
+# hourが一緒であればcountを加算
+wday: 0 =
+{count: 5, hour: 0}
+{count: 4, hour: 1}
+{count: 4, hour: 2}
+{count: 4, hour: 3}
+
+[ins000, ins001, ins002, ins003, ins004, ins005]
+
+{count: 5, hour: 0, [ins000, ins001, ins002, ins003, ins004, ins005]}
+{count: 4, hour: 1, [ins000, ins001, ins002, ins003, ins004]}
+{count: 4, hour: 2, [ins000, ins001, ins002, ins003, ins004]}
+{count: 4, hour: 3, [ins000, ins001, ins002, ins003, ins004]}
+
+id: ins000 = [0, 1, 2, 3]
+id: ins001 = [1, 2, 3]

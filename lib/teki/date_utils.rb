@@ -1,23 +1,15 @@
 module Teki
   class DateUtils
-    # weekly_schedule: Teki::WeeklySchedule
-    def initialize(weekly_schedule)
-      @weekly_schedule =  weekly_schedule.base_time
+
+    def self.iterate_time(range, step, &block)
+      current = range.begin
+      while current <= range.end
+        block.call(current)
+        current += step
+      end
     end
 
-    def to_utc
-      # wday, hourをキーとして必要台数を対応付ける
-      # wdayごとにグルーピング
-      # 必要台数ごとにグルーピング
-    end
-
-    private
-
-    def merge(box, schedule)
-
-    end
-
-    def to_wday(weekday)
+    def self.to_wday(weekday)
       case weekday
       when :sun then
         0

@@ -26,7 +26,7 @@ module Teki
   end
 
   # istance_count: 1 or even integer
-  # hours: array of 0-23 itenger  [0, 1, 2]
-  class Schedule < ::Value.new(:instance_count, :hours)
+  # time_range:
+  class Schedule < ::Value.new(:instance_count, :time_range)
   end
 end

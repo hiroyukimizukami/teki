@@ -6,7 +6,7 @@ module Teki
     # return Config.new
   end
 
-  class Config < ::Value.new(:layers)
+  class Config < ::Value.new(:time_zone, :layers)
     def self.create(time_zone:, layers:)
       with(time_zone: time_zone, layers: layers)
     end
@@ -22,7 +22,14 @@ module Teki
 
   # base_time: Time object
   # args: [Teki::Schedule]
-  class WeeklySchedule < ::Value.new(:base_time, :sun, :mon, :tue, :wed, :thu, :fri, :sat)
+  class WeeklySchedule < ::Value.new(:sun, :mon, :tue, :wed, :thu, :fri, :sat)
+    def self.create(sun:, mon:, tue:, wed:, thu:, fri:, sat:)
+      with(sun: sun, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat)
+    end
+
+    def all
+      [sun, mon, tue, wed, thu, fri, sat].flatten.compact
+    end
   end
 
   # istance_count: 1 or even integer

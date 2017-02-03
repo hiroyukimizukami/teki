@@ -13,20 +13,20 @@ module Teki
 
     def self.to_wday(weekday)
       case weekday
-      when :sun then
-        0
-      when :mon then
-        1
-      when :tue then
-        2
-      when :wed then
-        3
-      when :thu then
-        4
-      when :fri then
-        5
-      when :sat then
-        6
+      when 0 then
+        :sun
+      when 1 then
+        :mon
+      when 2 then
+        :tue
+      when 3 then
+        :wed
+      when 4 then
+        :thu
+      when 5 then
+        :fri
+      when 6 then
+        :sat
       else
         raise 'Invalid weekday.'
       end

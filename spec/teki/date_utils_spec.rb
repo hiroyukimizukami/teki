@@ -18,4 +18,18 @@ describe Teki::DateUtils do
     end
   end
 
+  describe 'to_wday' do
+    context do
+      it 'parse wday value to symbol' do
+        expect(described_class.to_wday(0)).to eq(:sun)
+        expect(described_class.to_wday(1)).to eq(:mon)
+        expect(described_class.to_wday(2)).to eq(:tue)
+        expect(described_class.to_wday(3)).to eq(:wed)
+        expect(described_class.to_wday(4)).to eq(:thu)
+        expect(described_class.to_wday(5)).to eq(:fri)
+        expect(described_class.to_wday(6)).to eq(:sat)
+        expect { described_class.to_wday(-1) }.to raise_error(StandardError)
+      end
+    end
+  end
 end

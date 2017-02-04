@@ -41,23 +41,24 @@ Aws::OpsWorks::Client#set_time_based_auto_scaling(instance_id: String, auto_scal
 
 ```
 {
-  "time_zone": '+09:00'
+  "time_zone": '+09:00',
+  "stack_name": 'example.com',
   "layers" : {
     "api-server": {
       "mon": [
         {
           "count": 1,
-          "time_range": 0-9,
+          "time_range": 0-9
         },
         {
           "count": 2,
-          "time_range": 22-23,
+          "time_range": 22-23
         }
-      ]
-      "mon": [
+      ],
+      "tue": [
         {
           "count": 4,
-          "time_range": 18-23,
+          "time_range": 18-23
         }
       ]
     }
@@ -66,44 +67,30 @@ Aws::OpsWorks::Client#set_time_based_auto_scaling(instance_id: String, auto_scal
 
 ```
 
----
+# メモ
+## Timezone付きのTimebase設定を -> UTCに変換するあたり
+入力形式
+```
+input = { wday: [{time_range(jst): instance_count}], ...}
+```
+※time_rangeは年月月日までの精度でそれ以下は00:00:00固定
 
-# Memo
+ wdayのキーをすべてばらして配列にする
+ ```
+ [ {time_range(jst): instance_count}...]
+ ```
 
+ 1時間単位のインスタンス数の連想配列にする(時間が重複しているものはインスタンス数を合算する)
+ ```
+ [{time_range(jst): instance_count}...]
+ ```
 
-mon 5:0-23 -> sun 5:15-23, mon 5:0-9
-sun 5:0-23 -> sat 5:15-23, sun 5:0-9
+timezoneを UTCに変換
+ ```
+ [{time_range(utc): instance_count}...]
+ ```
 
-# 入力
-mon: {count, time_range} (JST)
-
-# TimeRangeをいてレートしながらUTCに変換し、時までの時刻オブジェクトをキー、インスタンス数を値としたハッシュにする
-# キーが値的に重複している場合は、インスタンス数を加算する
-{time_hour, count} (UTC)
-
-{count, wday, hour} (UTC)
-wday で group by
-
-wday: 0 =
-{count: 1, hour:0}
-{count: 4, hour:0}
-{count: 4, hour:1}
-{count: 4, hour:2}
-{count: 4, hour:3}
-
-# hourが一緒であればcountを加算
-wday: 0 =
-{count: 5, hour: 0}
-{count: 4, hour: 1}
-{count: 4, hour: 2}
-{count: 4, hour: 3}
-
-[ins000, ins001, ins002, ins003, ins004, ins005]
-
-{count: 5, hour: 0, [ins000, ins001, ins002, ins003, ins004, ins005]}
-{count: 4, hour: 1, [ins000, ins001, ins002, ins003, ins004]}
-{count: 4, hour: 2, [ins000, ins001, ins002, ins003, ins004]}
-{count: 4, hour: 3, [ins000, ins001, ins002, ins003, ins004]}
-
-id: ins000 = [0, 1, 2, 3]
-id: ins001 = [1, 2, 3]
+ wday毎をキーとした配列にする
+ ```
+ [ 0: [{time_range(utc): instance_count}...], 1: [...]}
+ ```

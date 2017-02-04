@@ -10,9 +10,7 @@ module Teki
       result = {}
       time_instaces.each do |k, v|
         key = Teki::DateUtils.to_wday(k.wday)
-        if result[key].nil?
-          result[key] = {}
-        end
+        result[key] = {} if result[key].nil?
         result[key][k] = v
       end
       result

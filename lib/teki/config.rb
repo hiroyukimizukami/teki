@@ -24,13 +24,11 @@ module Teki
       end
 
       def all
-        [sun, mon, tue, wed, thu, fri, sat].flatten.compact
-      end
-    end
-
-    class Schedule < ::Value.new(:instance_count, :time_range)
-      def self.create(instance_count:, time_range:)
-        with(instance_count: instance_count, time_range: time_range)
+        result = {}
+        [sun, mon, tue, wed, thu, fri, sat].each do |e|
+          result.merge!(e) if e
+        end
+        result
       end
     end
   end

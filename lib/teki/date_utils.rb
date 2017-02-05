@@ -31,5 +31,15 @@ module Teki
         raise 'Invalid weekday.'
       end
     end
+
+    def self.to_instance_count_by_hour(schedules)
+      result = {}
+      schedules.each do |schedule|
+        Teki::DateUtils.step(schedule[:time_range], Teki::DateUtils::HOUR) do |time|
+          result[time] = result[time].nil? ? schedule[:count] : result[time] + schedule[:count]
+        end
+      end
+      result
+    end
   end
 end

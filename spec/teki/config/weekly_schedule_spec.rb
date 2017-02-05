@@ -4,17 +4,25 @@ describe Teki::Config::WeeklySchedule do
   context 'all' do
     subject do
       described_class.create(
-        sun: [0, 1],
-        mon: [1, 2],
-        tue: [2, 3],
+        sun: { sunfoo: 'bar' },
+        mon: { monfoo: 'bar' },
+        tue: { tuefoo: 'bar' },
         wed: nil,
-        thu: [8, 9],
-        fri: [5, 6],
-        sat: [10, 11],
+        thu: { thufoo: 'bar' },
+        fri: { frioo: 'bar' },
+        sat: { satfoo: 'bar' },
       ).all
     end
     it 'return all of its schedules' do
-      expect(subject).to eq([0, 1, 1, 2, 2, 3, 8, 9, 5, 6, 10, 11])
+      expectation = {
+        sunfoo: 'bar',
+        monfoo: 'bar',
+        tuefoo: 'bar',
+        thufoo: 'bar',
+        frioo: 'bar',
+        satfoo: 'bar',
+      }
+      expect(subject).to eq(expectation)
     end
   end
 end

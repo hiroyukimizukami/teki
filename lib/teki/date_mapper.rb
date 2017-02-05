@@ -1,9 +1,16 @@
 module Teki
   class DateMapper
-
-    # @weekly_schedule: Teki::WeeklySchedule
-    def map(weekly_schedule)
-      group_by_wday(to_utc(to_time_instance(weekly_schedule.all)))
+    def to_utc(weekly_schedule)
+      group = group_by_wday(change_timezone(weekly_schedule.all))
+      Teki::Config::WeeklySchedule.create(
+        sun: group[:sun],
+        mon: group[:mon],
+        tue: group[:hue],
+        wed: group[:wed],
+        thu: group[:thu],
+        fri: group[:fri],
+        sat: group[:sat],
+      )
     end
 
     def group_by_wday(time_instaces)
@@ -16,22 +23,10 @@ module Teki
       result
     end
 
-    def to_utc(time_instances)
+    def change_timezone(time_instances)
       time_instances.map do |k, v|
         [k.getutc, v]
       end.to_h
     end
-
-    # schedules: [Teki::Schedule]
-    def to_time_instance(schedules)
-      result = {}
-      schedules.each do |schedule|
-        Teki::DateUtils.step(schedule.time_range, Teki::DateUtils::HOUR) do |time|
-          result[time] = result[time].nil? ? schedule.instance_count : result[time] + schedule.instance_count
-        end
-      end
-      result
-    end
-
   end
 end

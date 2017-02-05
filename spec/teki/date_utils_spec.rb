@@ -32,4 +32,31 @@ describe Teki::DateUtils do
       end
     end
   end
+
+  describe 'to_instance_count_by_hour' do
+    let(:base_time) { Time.new(2017, 1, 1, 0, 0, 0, "+09:00") }
+    let(:hour) { 3600 }
+    context do
+      let(:schedules) do
+        [
+          { count: 4, time_range: (base_time - hour * 3)..base_time },
+          { count: 2, time_range: (base_time - hour * 6)..(base_time - hour * 1) },
+        ]
+      end
+
+      it 'returns time key hash' do
+        expectation = {
+          (base_time - hour * 6) => 2,
+          (base_time - hour * 5) => 2,
+          (base_time - hour * 4) => 2,
+          (base_time - hour * 3) => 6,
+          (base_time - hour * 2) => 6,
+          (base_time - hour * 1) => 6,
+          (base_time) => 4,
+        }
+        result = described_class.to_instance_count_by_hour(schedules)
+        expect(result).to eq(expectation)
+      end
+    end
+  end
 end

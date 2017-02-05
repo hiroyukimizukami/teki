@@ -1,5 +1,5 @@
 module Teki
-  class DateMapper
+  class DateTranslator
     def to_utc(weekly_schedule)
       group = group_by_wday(change_timezone(weekly_schedule.all))
       Teki::Config::WeeklySchedule.create(

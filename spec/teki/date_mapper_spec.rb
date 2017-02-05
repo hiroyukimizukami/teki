@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Teki::DateMapper do
+describe Teki::DateTranslator do
   let(:base_time) { Time.new(2017, 1, 1, 0, 0, 0, '+09:00') }
   let(:hour) { 3600 }
   subject { described_class.new }

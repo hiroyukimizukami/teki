@@ -23,7 +23,6 @@ module Teki
 
       def stack(name)
         stacks = client.describe_stacks.stacks.map do |s|
-          p s
           ::Aws::OpsWorks::Stack.new(s.stack_id, client: client)
         end
         stack = stacks.select { |s| s.name == name }.first

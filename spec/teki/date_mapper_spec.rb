@@ -12,14 +12,14 @@ describe Teki::DateMapper do
       let(:sat) { Time.new(2017, 1, 7, 23, 0, 0, "+09:00") }
       let(:params) do
         sun_range = (sun - hour * 3)..sun
-        sun_schedule = Teki::Schedule.create(instance_count: 1, time_range: sun_range)
+        sun_schedule = Teki::Config::Schedule.create(instance_count: 1, time_range: sun_range)
         mon_range = (mon - hour * 24)..(mon - hour * 20)
-        mon_schedule = Teki::Schedule.create(instance_count: 2, time_range: mon_range)
+        mon_schedule = Teki::Config::Schedule.create(instance_count: 2, time_range: mon_range)
         mon2_range = (mon - hour * 3)..mon
-        mon2_schedule = Teki::Schedule.create(instance_count: 4, time_range: mon2_range)
+        mon2_schedule = Teki::Config::Schedule.create(instance_count: 4, time_range: mon2_range)
         sat_range = (sat - hour * 12)..(sat - hour * 10)
-        sat_schedule = Teki::Schedule.create(instance_count: 4, time_range: sat_range)
-        Teki::WeeklySchedule.create(
+        sat_schedule = Teki::Config::Schedule.create(instance_count: 4, time_range: sat_range)
+        Teki::Config::WeeklySchedule.create(
           sun: [sun_schedule],
           mon: [mon_schedule, mon2_schedule],
           tue: nil,
@@ -117,8 +117,8 @@ describe Teki::DateMapper do
     context do
       let(:schedules) do
         [
-          Teki::Schedule.create(instance_count: 4, time_range: (base_time - hour * 3)..base_time),
-          Teki::Schedule.create(instance_count: 2, time_range: (base_time - hour * 6)..(base_time - hour * 1)),
+          Teki::Config::Schedule.create(instance_count: 4, time_range: (base_time - hour * 3)..base_time),
+          Teki::Config::Schedule.create(instance_count: 2, time_range: (base_time - hour * 6)..(base_time - hour * 1)),
         ]
       end
 

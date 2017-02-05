@@ -12,11 +12,14 @@ module Teki
       def layers(stack_name)
         layers = {}
         stack(stack_name).layers.each do |layer|
-          p layer.shortname
           instances = client.describe_instances(layer_id: layer.id).instances
           layers[layer.shortname] = instances.map { |i| Teki::Aws::Instance.create(i) }
         end
         layers
+      end
+
+      def set_time_based_auto_scaling(weekly_schedule)
+        puts "TODO impl"
       end
 
       private

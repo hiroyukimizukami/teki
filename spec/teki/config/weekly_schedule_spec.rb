@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Teki::WeeklySchedule do
+describe Teki::Config::WeeklySchedule do
   context 'all' do
     subject do
       described_class.create(

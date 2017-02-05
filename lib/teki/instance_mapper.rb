@@ -1,8 +1,6 @@
 module Teki
   class InstanceMapper
-    # config: Teki::Config
-    # layers: [Teki::Aws::Layer]
-    def map(time_instances, layers:)
+    def map(time_instances, instances:)
     end
 
     def group_by_ez(layers)

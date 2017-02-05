@@ -3,7 +3,7 @@ module Teki
 
     HOUR = 3600
 
-    def self.iterate_time(range, step, &block)
+    def self.step(range, step, &block)
       current = range.begin
       while current <= range.end
         block.call(current)

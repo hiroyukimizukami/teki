@@ -26,7 +26,7 @@ module Teki
     def to_time_instance(schedules)
       result = {}
       schedules.each do |schedule|
-        Teki::DateUtils.iterate_time(schedule.time_range, Teki::DateUtils::HOUR) do |time|
+        Teki::DateUtils.step(schedule.time_range, Teki::DateUtils::HOUR) do |time|
           result[time] = result[time].nil? ? schedule.instance_count : result[time] + schedule.instance_count
         end
       end

@@ -1,9 +1,10 @@
 module Teki
   module Config
-    def load(path)
-      #TODO
-      # get basetime
-      # return Config.new
+    def self.load(path)
+      data = open(path) do |io|
+        JSON.load(io)
+      end
+      data
     end
 
     class Entry < ::Value.new(:time_zone, :layers)

@@ -9,10 +9,7 @@ module Teki
     # TODO validate: instance_count, 24/7 present > Teki::Validator
     config.layers.each do |layers|
       instances = layers[layers.layer_name]
-      # TODO DateTranslator -> DateTranslator#to_utc
-      # config -> parse to time_instance(JST)
-      # DateTranslator#to_utc : time_instance(JST) -> time_instance(UTC)
-      time_instances = Teki::DateTranslator.new.map(layers.weekly_schedule)
+      weekly_schedule_utc = Teki::DateTranslator.new.to_utc(layers.weekly_schedule)
       instaces_mapped = Teki::InstanceMapper.new.map(time_instances, instances)
     end
 

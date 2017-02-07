@@ -11,8 +11,8 @@ module Teki
       end
     end
 
-    def self.to_wday(weekday)
-      case weekday
+    def self.to_weekday(wday)
+      case wday
       when 0 then
         :sun
       when 1 then
@@ -28,10 +28,32 @@ module Teki
       when 6 then
         :sat
       else
+        raise 'Invalid wday.'
+      end
+    end
+
+    def self.to_wday(weekday)
+      case weekday.to_sym
+      when :sun then
+        0
+      when :mon then
+        1
+      when :tue then
+        2
+      when :wed then
+        3
+      when :thu then
+        4
+      when :fri then
+        5
+      when :sat then
+        6
+      else
         raise 'Invalid weekday.'
       end
     end
 
+    # TODO move to config
     def self.to_instance_count_by_hour(schedules)
       result = {}
       schedules.each do |schedule|

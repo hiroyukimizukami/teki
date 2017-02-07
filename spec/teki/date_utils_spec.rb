@@ -18,17 +18,32 @@ describe Teki::DateUtils do
     end
   end
 
-  describe 'to_wday' do
+  describe 'to_weekday' do
     context do
       it 'parse wday value to symbol' do
-        expect(described_class.to_wday(0)).to eq(:sun)
-        expect(described_class.to_wday(1)).to eq(:mon)
-        expect(described_class.to_wday(2)).to eq(:tue)
-        expect(described_class.to_wday(3)).to eq(:wed)
-        expect(described_class.to_wday(4)).to eq(:thu)
-        expect(described_class.to_wday(5)).to eq(:fri)
-        expect(described_class.to_wday(6)).to eq(:sat)
-        expect { described_class.to_wday(-1) }.to raise_error(StandardError)
+        expect(described_class.to_weekday(0)).to eq(:sun)
+        expect(described_class.to_weekday(1)).to eq(:mon)
+        expect(described_class.to_weekday(2)).to eq(:tue)
+        expect(described_class.to_weekday(3)).to eq(:wed)
+        expect(described_class.to_weekday(4)).to eq(:thu)
+        expect(described_class.to_weekday(5)).to eq(:fri)
+        expect(described_class.to_weekday(6)).to eq(:sat)
+        expect { described_class.to_weekday(-1) }.to raise_error(StandardError)
+      end
+    end
+  end
+
+  describe 'to_weekday' do
+    context do
+      it 'parse weekday sym to wday value' do
+        expect(described_class.to_wday(:sun)).to eq(0)
+        expect(described_class.to_wday(:mon)).to eq(1)
+        expect(described_class.to_wday(:tue)).to eq(2)
+        expect(described_class.to_wday(:wed)).to eq(3)
+        expect(described_class.to_wday(:thu)).to eq(4)
+        expect(described_class.to_wday(:fri)).to eq(5)
+        expect(described_class.to_wday(:sat)).to eq(6)
+        expect { described_class.to_weekday(-1) }.to raise_error(StandardError)
       end
     end
   end

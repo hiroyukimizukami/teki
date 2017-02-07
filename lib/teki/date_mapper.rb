@@ -16,7 +16,7 @@ module Teki
     def group_by_wday(time_instaces)
       result = {}
       time_instaces.each do |k, v|
-        key = Teki::DateUtils.to_wday(k.wday)
+        key = Teki::DateUtils.to_weekday(k.wday)
         result[key] = {} if result[key].nil?
         result[key][k] = v
       end

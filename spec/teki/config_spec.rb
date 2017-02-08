@@ -31,6 +31,45 @@ describe Teki::Config do
     end
   end
 
+  describe 'parse_layer' do
+    subject { described_class.parse_layer(base_time, 'dev.layer.com', weekly_schedules) }
+    context do
+      let(:base_time) { Time.new(2017, 2, 8, 0, 0, 0, '+09:00') }
+      let(:weekday) { 'mon' }
+      let(:weekly_schedules) do
+        {
+          sun: [ { count: 4, time_range: '0-2' }, { count: 2, time_range: '22-23' } ],
+          mon: [ { count: 4, time_range: '0-2' }, { count: 2, time_range: '22-23' } ],
+          tue: [ { count: 4, time_range: '0-2' }, { count: 2, time_range: '22-23' } ],
+          wed: [ { count: 4, time_range: '0-2' }, { count: 2, time_range: '22-23' } ],
+          thu: [ { count: 4, time_range: '0-2' }, { count: 2, time_range: '22-23' } ],
+          fri: nil,
+          sat: [ { count: 4, time_range: '0-2' }, { count: 2, time_range: '22-23' } ],
+        }
+      end
+      it '' do
+        expect(subject).to eq(nil)
+      end
+    end
+  end
+
+  describe 'parse_day_schedules' do
+    subject { described_class.parse_day_schedules(base_time, weekday, day_schedules) }
+    context do
+      let(:base_time) { Time.new(2017, 2, 8, 0, 0, 0, '+09:00') }
+      let(:weekday) { 'mon' }
+      let(:day_schedules) do
+        [
+          { count: 4, time_range: '0-2' },
+          { count: 2, time_range: '22-23' }
+        ]
+      end
+      it '' do
+        expect(subject).to eq(nil)
+      end
+    end
+  end
+
   describe 'to_time_range' do
     subject { described_class.to_time_range(base_time, weekday, range_string) }
     context do

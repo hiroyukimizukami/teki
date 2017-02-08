@@ -2,20 +2,40 @@ module Teki
   module Config
     def self.load(path)
       data = open(path) do |io|
-        JSON.load(io)
+        JSON.load(io, nil,  symbolize_names: true )
       end
 
-      data['layers']
-
       ::Teki::Config::Entry.create(
-        timezone: data['timezone'],
-        stack_name: data['stack_name'],
+        timezone: data[:timezone],
+        stack_name: data[:stack_name],
         layers: nil
       )
     end
 
-    def self.parse_layer(layer)
+    def self.parse_layer(base_time, name, weekly_setting)
+      weekly_schedule = ::Teki::Config::WeeklySchedule.create(
+        sun: parse_day_schedules(base_time, :sun, weekly_setting[:sun]),
+        mon: parse_day_schedules(base_time, :mon, weekly_setting[:mon]),
+        tue: parse_day_schedules(base_time, :tue, weekly_setting[:tue]),
+        wed: parse_day_schedules(base_time, :wed, weekly_setting[:wed]),
+        thu: parse_day_schedules(base_time, :thu, weekly_setting[:thu]),
+        fri: parse_day_schedules(base_time, :fri, weekly_setting[:fri]),
+        sat: parse_day_schedules(base_time, :sat, weekly_setting[:sat]),
+      )
 
+      ::Teki::Config::Layer.create(name: name, weekly_schedule: weekly_schedule)
+    end
+
+    def self.parse_day_schedules(base_time, weekday, day_schedules)
+      result = {}
+      return result if day_schedules.nil?
+      day_schedules.map do |schedule|
+        count = schedule[:count]
+        to_time_range(base_time, weekday, schedule[:time_range]).map do |time|
+          result[time] = count
+        end
+      end
+      result
     end
 
     # Implementing
@@ -23,8 +43,7 @@ module Teki
       wday = ::Teki::DateUtils.to_wday(weekday)
       int_range = to_integer_range(range_string)
       raise ArgumentError, "Invalid Range: #{range_string}" if int_range.begin > int_range.end
-      p int_range
-      int_range.map do |i|
+        int_range.map do |i|
         create_time(base_time, wday, i)
       end
     end
@@ -62,9 +81,9 @@ module Teki
       end
     end
 
-    class Layer < ::Value.new(:layer_name, :weekly_schedule)
-      def self.create(layer_name:, weekly_schedule:)
-        with(layer_name: layer_name, weekly_schedule: weekly_schedule)
+    class Layer < ::Value.new(:name, :weekly_schedule)
+      def self.create(name:, weekly_schedule:)
+        with(name: name, weekly_schedule: weekly_schedule)
       end
     end
 

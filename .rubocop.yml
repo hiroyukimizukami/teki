@@ -1,0 +1,11 @@
+Metrics/LineLength:
+  Max: 120
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/Documentation:
+  Enabled: false

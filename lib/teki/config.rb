@@ -13,26 +13,30 @@ module Teki
     end
 
     def self.parse_layer(base_time, name, weekly_setting)
-      weekly_schedule = ::Teki::Config::WeeklySchedule.create(
-        sun: parse_day_schedules(base_time, :sun, weekly_setting[:sun]),
-        mon: parse_day_schedules(base_time, :mon, weekly_setting[:mon]),
-        tue: parse_day_schedules(base_time, :tue, weekly_setting[:tue]),
-        wed: parse_day_schedules(base_time, :wed, weekly_setting[:wed]),
-        thu: parse_day_schedules(base_time, :thu, weekly_setting[:thu]),
-        fri: parse_day_schedules(base_time, :fri, weekly_setting[:fri]),
-        sat: parse_day_schedules(base_time, :sat, weekly_setting[:sat]),
-      )
-
+      weekly_schedule = parse_weekly_schedule(base_time, weekly_setting)
       ::Teki::Config::Layer.create(name: name, weekly_schedule: weekly_schedule)
     end
 
-    def self.parse_day_schedules(base_time, weekday, day_schedules)
+    def self.parse_weekly_schedule(base_time, weekly_setting)
+      ::Teki::Config::WeeklySchedule.create(
+        sun: parse_day_schedule(base_time, :sun, weekly_setting[:sun]),
+        mon: parse_day_schedule(base_time, :mon, weekly_setting[:mon]),
+        tue: parse_day_schedule(base_time, :tue, weekly_setting[:tue]),
+        wed: parse_day_schedule(base_time, :wed, weekly_setting[:wed]),
+        thu: parse_day_schedule(base_time, :thu, weekly_setting[:thu]),
+        fri: parse_day_schedule(base_time, :fri, weekly_setting[:fri]),
+        sat: parse_day_schedule(base_time, :sat, weekly_setting[:sat]),
+      )
+    end
+
+    def self.parse_day_schedule(base_time, weekday, day_schedules)
       result = {}
       return result if day_schedules.nil?
       day_schedules.map do |schedule|
         count = schedule[:count]
         to_time_range(base_time, weekday, schedule[:time_range]).map do |time|
-          result[time] = count
+          result[time] = 0 if result[time].nil?
+          result[time] += count
         end
       end
       result
@@ -43,12 +47,12 @@ module Teki
       wday = ::Teki::DateUtils.to_wday(weekday)
       int_range = to_integer_range(range_string)
       raise ArgumentError, "Invalid Range: #{range_string}" if int_range.begin > int_range.end
-        int_range.map do |i|
+      int_range.map do |i|
         create_time(base_time, wday, i)
       end
     end
 
-    def self.get_basetime(timezone)
+    def self.create_week_start_time(timezone)
       now = Time.now.utc
       day = now.day - now.wday
       Time.new(now.year, now.month, day, 0, 0, 0, timezone)

@@ -6,11 +6,10 @@ describe Teki::Config do
     context do
       let(:config_file) { 'spec/resources/time_base.json' }
       it 'parse config' do
-        expect(subject).to be_a(Teki::Config::Entry)
+        expect(subject).to be_a(::Teki::Config::Entry)
         expect(subject.timezone).to eq('+09:00')
         expect(subject.stack_name).to eq('example.com')
-        pending
-        expect(subject.layers).not_to eq(nil)
+        expect(subject.layers).to all be_an(::Teki::Config::Layer)
       end
     end
   end

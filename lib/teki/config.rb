@@ -2,13 +2,18 @@ module Teki
   module Config
     def self.load(path)
       data = open(path) do |io|
-        JSON.load(io, nil,  symbolize_names: true )
+        JSON.load(io, nil, symbolize_names: true)
+      end
+
+      base_time = create_week_start_time(data[:timezone])
+      layers = data[:layers].map do |name, weekly_setting|
+        parse_layer(base_time, name, weekly_setting)
       end
 
       ::Teki::Config::Entry.create(
         timezone: data[:timezone],
         stack_name: data[:stack_name],
-        layers: nil
+        layers: layers,
       )
     end
 

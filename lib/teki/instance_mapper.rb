@@ -4,18 +4,20 @@ module Teki
     end
 
     def prioritize(instances)
-      grouped = instances.group_by { |i| i.availability_zone }
+      grouped = instances.group_by { |i| i.availability_zone }.sort.to_h
       grouped = grouped.map do |k, v|
-        v.sort { |e1, e2| e1.hostname <=> e2.hostname }
-      end.flatten
+        v.sort_by(&:hostname)
+      end
 
-      p grouped.count
-      p grouped.map(&:availability_zone)
-
-      # count = grouped.count
-      # (0..count).each do |i|
-      #   result <<
-      # end
+      result = []
+      count = grouped.count
+      while grouped.flatten.count > 0 do
+        (0...count).each do |i|
+          next if grouped[i].empty?
+          result << grouped[i].shift
+        end
+      end
+      result
     end
   end
 end

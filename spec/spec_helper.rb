@@ -101,5 +101,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+require 'factory_girl'
+require 'faker'
 
 Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*.rb")).each { |f| require f }
+Dir.glob(File.join(File.dirname(__FILE__), "../spec/support/*.rb")).each { |f| require f }

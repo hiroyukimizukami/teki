@@ -1,10 +1,11 @@
 module Teki
   class InstanceMapper
     def map(entry, layers)
+      # TODO impl
     end
 
     def prioritize(instances)
-      grouped = instances.group_by { |i| i.availability_zone }.sort.to_h
+      grouped = instances.group_by(&:availability_zone).sort.to_h
       grouped = grouped.map do |k, v|
         v.sort_by(&:hostname)
       end

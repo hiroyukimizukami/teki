@@ -5,12 +5,15 @@ require './lib/teki/aws/instance'
 module Teki
   def self.execute(key:, secret:, region:, config_path:, dry_run: true)
     # config = Teki::Config.load(config_path)
-    # layers = Teki::Aws::OpsWorks.new(key: key, secret: secret, region: region)
-    # # TODO validate: instance_count, 24/7 present > Teki::Validator
-    # config.layers.each do |layers|
-    #   instances = layers[layers.layer_name]
-    #   weekly_schedule_utc = Teki::DateTranslator.new.to_utc(layers.weekly_schedule)
-    #   instaces_mapped = Teki::InstanceMapper.new.map(time_instances, instances)
+    # client = Teki::Aws::OpsWorks.new(key: key, secret: secret, region: region)
+    # layers = client..layers(config.stack_name)
+    # config.layers.each do |layer|
+    # TODO filter time_based
+    #   instances = layers[layer.name].select(&:timer?)
+    #   weekly_schedule_utc = Teki::DateTranslator.new.to_utc(layer.weekly_schedule)
+    # TODO validate instance count
+    #   instaces_mapped = Teki::Aws::InstanceMapper.new.map(weekly_schedule_utc, instances)
+    #   client.set_time_based_auto_scaling(instance_mapped)
     # end
 
     # puts instances_mapped

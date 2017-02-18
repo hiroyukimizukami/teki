@@ -12,6 +12,10 @@ module Teki
              instance_type: described_instance.instance_type,
              auto_scaling_type: described_instance.auto_scaling_type)
       end
+
+      def timer?
+        auto_scaling_type == 'timer'
+      end
     end
   end
 end

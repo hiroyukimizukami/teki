@@ -4,7 +4,7 @@ describe Teki::Config::WeeklySchedule do
   context 'all' do
     subject do
       described_class.create(
-        sun: { sunfoo: 'bar' },
+        sun: { sunfoo: 'bar', sunfoo2: 'bar2' },
         mon: { monfoo: 'bar' },
         tue: { tuefoo: 'bar' },
         wed: nil,
@@ -16,6 +16,7 @@ describe Teki::Config::WeeklySchedule do
     it 'return all of its schedules' do
       expectation = {
         sunfoo: 'bar',
+        sunfoo2: 'bar2',
         monfoo: 'bar',
         tuefoo: 'bar',
         thufoo: 'bar',

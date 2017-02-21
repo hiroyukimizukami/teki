@@ -1,7 +1,16 @@
 module Teki
   class InstanceMapper
-    def map(entry, layers)
-      # TODO impl
+    def map(weekly_schedule, instances)
+      weekly_schedule.all.map do |schedule|
+      end
+    end
+
+
+    def assign_instance(day_schedule, instances)
+      day_schedule.map do |time, count|
+
+        [time, instances[0...count]]
+      end.to_h
     end
 
     def prioritize(instances)

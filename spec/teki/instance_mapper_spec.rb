@@ -1,6 +1,23 @@
 require 'spec_helper'
 
 describe ::Teki::InstanceMapper do
+
+  describe 'assign_instance' do
+    subject { described_class.new.assign_instance(day_schedule, instances) }
+
+    let(:a1) { create(:aws_instance, hostname: 'a1', availability_zone: 'ap-northeast-1a') }
+    let(:a2) { create(:aws_instance, hostname: 'a2', availability_zone: 'ap-northeast-1a') }
+    let(:a3) { create(:aws_instance, hostname: 'a3', availability_zone: 'ap-northeast-1a') }
+    let(:a4) { create(:aws_instance, hostname: 'a4', availability_zone: 'ap-northeast-1a') }
+    context do
+      let(:key_time) { Time.parse('2017-02-21 00:00:00 +00:00') }
+      let(:day_schedule) { {key_time => 3} }
+      let(:instances) { [a1, a2, a3, a4 ]  }
+
+      it { expect(subject[key_time]).to eq([a1, a2, a3]) }
+    end
+  end
+
   describe 'prioritize' do
     subject { described_class.new.prioritize(instances) }
 

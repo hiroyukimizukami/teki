@@ -8,7 +8,7 @@ module Teki
 
     def assign_instance(day_schedule, instances)
       day_schedule.map do |time, count|
-
+        raise 'instance count shortage' if count > instances.count
         [time, instances[0...count]]
       end.to_h
     end

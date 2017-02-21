@@ -9,12 +9,22 @@ describe ::Teki::InstanceMapper do
     let(:a2) { create(:aws_instance, hostname: 'a2', availability_zone: 'ap-northeast-1a') }
     let(:a3) { create(:aws_instance, hostname: 'a3', availability_zone: 'ap-northeast-1a') }
     let(:a4) { create(:aws_instance, hostname: 'a4', availability_zone: 'ap-northeast-1a') }
-    context do
-      let(:key_time) { Time.parse('2017-02-21 00:00:00 +00:00') }
-      let(:day_schedule) { {key_time => 3} }
+    context 'basic' do
+      let(:key_time1) { Time.parse('2017-02-21 00:00:00 +00:00') }
+      let(:key_time2) { Time.parse('2017-02-21 01:00:00 +00:00') }
+      let(:day_schedule) { {key_time1 => 3, key_time2 => 1} }
       let(:instances) { [a1, a2, a3, a4 ]  }
 
-      it { expect(subject[key_time]).to eq([a1, a2, a3]) }
+      it { expect(subject[key_time1]).to eq([a1, a2, a3]) }
+      it { expect(subject[key_time2]).to eq([a1]) }
+    end
+
+    context 'instance count shorage' do
+      let(:key_time1) { Time.parse('2017-02-21 00:00:00 +00:00') }
+      let(:day_schedule) { {key_time1 => 5 } }
+      let(:instances) { [a1, a2, a3, a4 ] }
+
+      it { expect{ subject }.to raise_error(StandardError) }
     end
   end
 

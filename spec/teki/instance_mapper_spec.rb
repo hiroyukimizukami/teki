@@ -2,6 +2,14 @@ require 'spec_helper'
 
 describe ::Teki::InstanceMapper do
 
+  describe 'to_instance_based_schedule' do
+    subject { described_class.new.to_instance_based_schedule(day_schedule) }
+
+    let(:a1) { create(:aws_instance, hostname: 'a1', availability_zone: 'ap-northeast-1a') }
+    let(:a2) { create(:aws_instance, hostname: 'a2', availability_zone: 'ap-northeast-1a') }
+    let(:day_schedule) { a1 => [], a2 => [] }
+  end
+
   describe 'assign_instance' do
     subject { described_class.new.assign_instance(day_schedule, instances) }
 

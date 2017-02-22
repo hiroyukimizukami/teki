@@ -1,10 +1,19 @@
 module Teki
   class InstanceMapper
     def map(weekly_schedule, instances)
-      weekly_schedule.all.map do |schedule|
-      end
     end
 
+    def
+
+    def to_instance_based_schedule(day_schedule)
+      result = {}
+      day_schedule.map do |time, instances|
+        v.each do |instance|
+          result[instance] = [] unless result[instance]
+          result[instance] << time
+        end
+      end
+    end
 
     def assign_instance(day_schedule, instances)
       day_schedule.map do |time, count|

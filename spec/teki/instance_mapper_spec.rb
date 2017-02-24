@@ -11,8 +11,8 @@ describe ::Teki::InstanceMapper do
     let(:key_time1) { Time.parse('2017-02-21 00:00:00 +00:00') }
     let(:key_time2) { Time.parse('2017-02-21 01:00:00 +00:00') }
     let(:key_time3) { Time.parse('2017-02-24 03:00:00 +00:00') }
-    let(:mon_schedule) { { key_time1 => [a1, a2], key_time2 => [a1] } }
-    let(:fri_schedule) { { key_time3 => [a1, c1, a2, a2]} }
+    let(:mon_schedule) { { key_time1 => [a1, c1], key_time2 => [a1] } }
+    let(:fri_schedule) { { key_time3 => [a1, c1, a2, c2]} }
     let(:weekly_schedule) do
       Teki::Config::WeeklySchedule.create(sun: nil, mon: mon_schedule, tue: nil, wed: nil, thu: nil, fri: fri_schedule, sat: nil)
     end
@@ -20,10 +20,20 @@ describe ::Teki::InstanceMapper do
     context do
       it do
         expectation = {
-          i001 => {
+          'i001' => {
             mon: [0, 1],
-            fri: [3]
-          }
+            fri: [3],
+          },
+          'i002' => {
+            mon: [0],
+            fri: [3],
+          },
+          'i003' => {
+            fri: [3],
+          },
+          'i004' => {
+            fri: [3],
+          },
         }
         expect(subject).to eq(expectation)
       end

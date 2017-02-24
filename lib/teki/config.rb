@@ -101,6 +101,29 @@ module Teki
         with(sun: sun, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat)
       end
 
+      def keys
+        [:sun, :mon, :tue, :wed, :thu, :fri, :sat]
+      end
+
+      def get(sym)
+        case(sym)
+        when :sun
+          self.sun
+        when :mon
+          self.mon
+        when :tue
+          self.thu
+        when :wed
+          self.wed
+        when :thu
+          self.thu
+        when :fri
+          self.fri
+        when :sat
+          self.sat
+        end
+      end
+
       def all
         result = {}
         [sun, mon, tue, wed, thu, fri, sat].each do |e|

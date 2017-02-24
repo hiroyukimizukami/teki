@@ -3,16 +3,32 @@ module Teki
     def map(weekly_schedule, instances)
     end
 
-    def
-
-    def to_instance_based_schedule(day_schedule)
+    def to_instance_based_schedule(weekly_schedule)
       result = {}
-      day_schedule.map do |time, instances|
-        v.each do |instance|
-          result[instance] = [] unless result[instance]
-          result[instance] << time
+      weekly_schedule.keys.each do |day|
+        schedule = to_instance_based_day_schedule(weekly_schedule.get(day))
+        next if schedule.nil?
+
+        schedule.each do |k, v|
+          result[k] = {} if result[k].nil?
+          result[k][day] = [] if result[k][day].nil?
+          result[k][day] << v
+          result[k][day].flatten!
         end
       end
+      result
+    end
+
+    def to_instance_based_day_schedule(day_schedule)
+      return if day_schedule.nil?
+      result = {}
+      day_schedule.map do |time, instances|
+        instances.each do |instance|
+          result[instance.instance_id] = [] unless result[instance.instance_id]
+          result[instance.instance_id] << time.hour
+        end
+      end
+      result
     end
 
     def assign_instance(day_schedule, instances)

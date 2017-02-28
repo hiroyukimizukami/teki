@@ -3,13 +3,13 @@ module Teki
     def to_utc(weekly_schedule)
       group = group_by_wday(change_timezone(weekly_schedule.all))
       Teki::Config::WeeklySchedule.create(
-        sun: group[:sun],
-        mon: group[:mon],
-        tue: group[:hue],
-        wed: group[:wed],
-        thu: group[:thu],
-        fri: group[:fri],
-        sat: group[:sat],
+        sunday: group[:sunday],
+        monday: group[:monday],
+        tuesday: group[:tuesday],
+        wednesday: group[:wednesday],
+        thursday: group[:thursday],
+        friday: group[:friday],
+        saturday: group[:saturday],
       )
     end
 

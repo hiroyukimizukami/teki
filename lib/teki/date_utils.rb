@@ -14,19 +14,19 @@ module Teki
     def self.to_weekday(wday)
       case wday
       when 0 then
-        :sun
+        :sunday
       when 1 then
-        :mon
+        :monday
       when 2 then
-        :tue
+        :tuesday
       when 3 then
-        :wed
+        :wednesday
       when 4 then
-        :thu
+        :thursday
       when 5 then
-        :fri
+        :friday
       when 6 then
-        :sat
+        :saturday
       else
         raise 'Invalid wday.'
       end
@@ -34,19 +34,19 @@ module Teki
 
     def self.to_wday(weekday)
       case weekday.to_sym
-      when :sun then
+      when :sunday then
         0
-      when :mon then
+      when :monday then
         1
-      when :tue then
+      when :tuesday then
         2
-      when :wed then
+      when :wednesday then
         3
-      when :thu then
+      when :thursday then
         4
-      when :fri then
+      when :friday then
         5
-      when :sat then
+      when :saturday then
         6
       else
         raise 'Invalid weekday.'

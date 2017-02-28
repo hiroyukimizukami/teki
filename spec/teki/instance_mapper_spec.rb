@@ -23,28 +23,36 @@ describe ::Teki::InstanceMapper do
     let(:key_time1) { Time.parse('2017-02-21 00:00:00 +00:00') }
     let(:key_time2) { Time.parse('2017-02-21 01:00:00 +00:00') }
     let(:key_time3) { Time.parse('2017-02-24 03:00:00 +00:00') }
-    let(:mon_schedule) { { key_time1 => [a1, c1], key_time2 => [a1] } }
-    let(:fri_schedule) { { key_time3 => [a1, c1, a2, c2]} }
+    let(:monday_schedule) { { key_time1 => [a1, c1], key_time2 => [a1] } }
+    let(:friday_schedule) { { key_time3 => [a1, c1, a2, c2]} }
     let(:weekly_schedule) do
-      Teki::Config::WeeklySchedule.create(sun: nil, mon: mon_schedule, tue: nil, wed: nil, thu: nil, fri: fri_schedule, sat: nil)
+      Teki::Config::WeeklySchedule.create(
+        sunday: nil,
+        monday: monday_schedule,
+        tuesday: nil,
+        wednesday: nil,
+        thursday: nil,
+        friday: friday_schedule,
+        saturday: nil
+      )
     end
 
     context do
       it do
         expectation = {
           'i001' => {
-            mon: [0, 1],
-            fri: [3],
+            monday: [0, 1],
+            friday: [3],
           },
           'i002' => {
-            mon: [0],
-            fri: [3],
+            monday: [0],
+            friday: [3],
           },
           'i003' => {
-            fri: [3],
+            friday: [3],
           },
           'i004' => {
-            fri: [3],
+            friday: [3],
           },
         }
         expect(subject).to eq(expectation)

@@ -10,7 +10,7 @@ module Teki
     end
 
     def complement_hours(on_hours)
-      (0...23).map do |hour|
+      (0..23).map do |hour|
         ret = [hour]
         ret << (on_hours.include?(hour) ? 'ON' : 'OFF')
         ret

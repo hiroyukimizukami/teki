@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 describe ::Teki::InstanceMapper do
+  describe 'to_time_based_autoacaling_params' do
+    subject { described_class.new.complement_hours(params) }
+
+    context do
+      let(:params) { [0, 1, 22, 23] }
+
+      it do
+        expect(subject).to eq(nil)
+      end
+    end
+  end
+
   describe 'to_instance_based_schedule' do
     subject { described_class.new.to_instance_based_schedule(weekly_schedule) }
 

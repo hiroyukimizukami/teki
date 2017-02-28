@@ -37,13 +37,13 @@ describe Teki::Config do
       let(:base_time) { Time.new(2017, 2, 5, 0, 0, 0, '+09:00') }
       let(:weekly_setting) do
         {
-          sun: nil,
-          mon: nil,
-          tue: nil,
-          wed: nil,
-          thu: nil,
-          fri: nil,
-          sat: nil,
+          sunday: nil,
+          monday: nil,
+          tuesday: nil,
+          wednesday: nil,
+          thursday: nil,
+          friday: nil,
+          saturday: nil,
         }
       end
       it 'returns Layer object' do
@@ -60,13 +60,13 @@ describe Teki::Config do
     let(:base_time) { Time.new(2017, 2, 5, 0, 0, 0, '+09:00') }
     let(:weekly_setting) do
       {
-        sun: [{ count: 4, time_range: '0-2' }, { count: 2, time_range: '2-3' }],
-        mon: [{ count: 3, time_range: '1-2' }],
-        tue: [{ count: 2, time_range: '8-10' }],
-        wed: [{ count: 4, time_range: '22-23' }],
-        thu: [{ count: 5, time_range: '0-1' }],
-        fri: nil,
-        sat: [{ count: 1, time_range: '2-3' }],
+        sunday: [{ count: 4, time_range: '0-2' }, { count: 2, time_range: '2-3' }],
+        monday: [{ count: 3, time_range: '1-2' }],
+        tuesday: [{ count: 2, time_range: '8-10' }],
+        wednesday: [{ count: 4, time_range: '22-23' }],
+        thursday: [{ count: 5, time_range: '0-1' }],
+        friday: nil,
+        saturday: [{ count: 1, time_range: '2-3' }],
       }
     end
     it 'contains weekly schedule' do
@@ -77,7 +77,7 @@ describe Teki::Config do
         Time.new(2017, 2, 5, 2, 0, 0, '+09:00') => 6,
         Time.new(2017, 2, 5, 3, 0, 0, '+09:00') => 2,
       }
-      expect(subject.sun).to eq(sun)
+      expect(subject.sunday).to eq(sun)
     end
   end
 
@@ -85,7 +85,7 @@ describe Teki::Config do
     subject { described_class.parse_day_schedule(base_time, weekday, day_schedules) }
     context do
       let(:base_time) { Time.new(2017, 2, 5, 0, 0, 0, '+09:00') }
-      let(:weekday) { 'mon' }
+      let(:weekday) { 'monday' }
       let(:day_schedules) do
         [
           { count: 4, time_range: '0-2' },
@@ -112,7 +112,7 @@ describe Teki::Config do
     subject { described_class.to_time_range(base_time, weekday, range_string) }
     context do
       let(:base_time) { Time.new(2017, 2, 7, 23, 45, 23, "+01:00") }
-      let(:weekday) { 'mon' }
+      let(:weekday) { 'monday' }
       let(:range_string) { '0-2' }
       it 'create base time' do
         expectation = [

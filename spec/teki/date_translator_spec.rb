@@ -7,42 +7,42 @@ describe Teki::DateTranslator do
 
   describe 'map' do
     context do
-      let(:sun) { Time.new(2017, 1, 1, 23, 0, 0, '+09:00') }
-      let(:mon) { Time.new(2017, 1, 2, 23, 0, 0, '+09:00') }
-      let(:sat) { Time.new(2017, 1, 7, 23, 0, 0, '+09:00') }
+      let(:sunday) { Time.new(2017, 1, 1, 23, 0, 0, '+09:00') }
+      let(:monday) { Time.new(2017, 1, 2, 23, 0, 0, '+09:00') }
+      let(:saturday) { Time.new(2017, 1, 7, 23, 0, 0, '+09:00') }
       let(:params) do
         sun_schedule = {
-          (sun - hour * 3) => 1,
-          (sun - hour * 2) => 1,
-          (sun - hour * 1) => 1,
-          sun => 1,
+          (sunday - hour * 3) => 1,
+          (sunday - hour * 2) => 1,
+          (sunday - hour * 1) => 1,
+          sunday => 1,
         }
 
         mon_schedule = {
-          (mon - hour * 23) => 2,
-          (mon - hour * 22) => 2,
-          (mon - hour * 21) => 2,
-          (mon - hour * 20) => 2,
-          (mon - hour * 3) => 4,
-          (mon - hour * 2) => 4,
-          (mon - hour * 1) => 4,
-          mon => 4,
+          (monday - hour * 23) => 2,
+          (monday - hour * 22) => 2,
+          (monday - hour * 21) => 2,
+          (monday - hour * 20) => 2,
+          (monday - hour * 3) => 4,
+          (monday - hour * 2) => 4,
+          (monday - hour * 1) => 4,
+          monday => 4,
         }
 
         sat_schedule = {
-          (sat - hour * 12) => 4,
-          (sat - hour * 11) => 4,
-          (sat - hour * 10) => 4,
+          (saturday - hour * 12) => 4,
+          (saturday - hour * 11) => 4,
+          (saturday - hour * 10) => 4,
         }
 
         Teki::Config::WeeklySchedule.create(
-          sun: sun_schedule,
-          mon: mon_schedule,
-          tue: nil,
-          wed: nil,
-          thu: nil,
-          fri: nil,
-          sat: sat_schedule,
+          sunday: sun_schedule,
+          monday: mon_schedule,
+          tuesday: nil,
+          wednesday: nil,
+          thursday: nil,
+          friday: nil,
+          saturday: sat_schedule,
         )
       end
       it 'creates instance_count for every hour' do
@@ -68,10 +68,9 @@ describe Teki::DateTranslator do
           Time.new(2017, 1, 7, 4, 0, 0, '+00:00') => 4,
         }
         result = subject.to_utc(params)
-        expect(result.sun).to eq(sun)
-        expect(result.mon).to eq(mon)
-        expect(result.mon).to eq(mon)
-        expect(result.sat).to eq(sat)
+        expect(result.sunday).to eq(sun)
+        expect(result.monday).to eq(mon)
+        expect(result.saturday).to eq(sat)
       end
     end
   end
@@ -99,9 +98,9 @@ describe Teki::DateTranslator do
         mon = { Time.new(2017, 1, 2, 0, 0, 0, '+00:00') => 2, }
         tue = { Time.new(2017, 1, 3, 0, 0, 0, '+00:00') => 2, }
 
-        expect(result[:sun]).to eq(sun)
-        expect(result[:mon]).to eq(mon)
-        expect(result[:tue]).to eq(tue)
+        expect(result[:sunday]).to eq(sun)
+        expect(result[:monday]).to eq(mon)
+        expect(result[:tuesday]).to eq(tue)
       end
     end
   end

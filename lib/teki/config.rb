@@ -24,13 +24,13 @@ module Teki
 
     def self.parse_weekly_schedule(base_time, weekly_setting)
       ::Teki::Config::WeeklySchedule.create(
-        sun: parse_day_schedule(base_time, :sun, weekly_setting[:sun]),
-        mon: parse_day_schedule(base_time, :mon, weekly_setting[:mon]),
-        tue: parse_day_schedule(base_time, :tue, weekly_setting[:tue]),
-        wed: parse_day_schedule(base_time, :wed, weekly_setting[:wed]),
-        thu: parse_day_schedule(base_time, :thu, weekly_setting[:thu]),
-        fri: parse_day_schedule(base_time, :fri, weekly_setting[:fri]),
-        sat: parse_day_schedule(base_time, :sat, weekly_setting[:sat]),
+        sunday: parse_day_schedule(base_time, :sunday, weekly_setting[:sunday]),
+        monday: parse_day_schedule(base_time, :monday, weekly_setting[:monday]),
+        tuesday: parse_day_schedule(base_time, :tuesday, weekly_setting[:tuesday]),
+        wednesday: parse_day_schedule(base_time, :wednesday, weekly_setting[:wednesday]),
+        thursday: parse_day_schedule(base_time, :thursday, weekly_setting[:thursday]),
+        friday: parse_day_schedule(base_time, :friday, weekly_setting[:friday]),
+        saturday: parse_day_schedule(base_time, :saturday, weekly_setting[:saturday]),
       )
     end
 
@@ -47,7 +47,6 @@ module Teki
       result
     end
 
-    # Implementing
     def self.to_time_range(base_time, weekday, range_string)
       wday = ::Teki::DateUtils.to_wday(weekday)
       int_range = to_integer_range(range_string)
@@ -96,37 +95,37 @@ module Teki
       end
     end
 
-    class WeeklySchedule < ::Value.new(:sun, :mon, :tue, :wed, :thu, :fri, :sat)
-      def self.create(sun:, mon:, tue:, wed:, thu:, fri:, sat:)
-        with(sun: sun, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat)
+    class WeeklySchedule < ::Value.new(:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday)
+      def self.create(sunday:, monday:, tuesday:, wednesday:, thursday:, friday:, saturday:)
+        with(sunday: sunday, monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday)
       end
 
       def keys
-        [:sun, :mon, :tue, :wed, :thu, :fri, :sat]
+        [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday]
       end
 
       def get(sym)
         case(sym)
-        when :sun
-          self.sun
-        when :mon
-          self.mon
-        when :tue
-          self.thu
-        when :wed
-          self.wed
-        when :thu
-          self.thu
-        when :fri
-          self.fri
-        when :sat
-          self.sat
+        when :sunday
+          self.sunday
+        when :monday
+          self.monday
+        when :tuesday
+          self.tuesday
+        when :wednesday
+          self.wednesday
+        when :thursday
+          self.thursday
+        when :friday
+          self.friday
+        when :saturday
+          self.saturday
         end
       end
 
       def all
         result = {}
-        [sun, mon, tue, wed, thu, fri, sat].each do |e|
+        [sunday, monday, tuesday, wednesday, thursday, friday, saturday].each do |e|
           result.merge!(e) if e
         end
         result

@@ -3,6 +3,20 @@ module Teki
     def map(weekly_schedule, instances)
     end
 
+    def to_time_based_autoscaling_param(instance_setting)
+      instance_setting.map do |instance_id, weekly_schedule|
+
+      end
+    end
+
+    def complement_hours(on_hours)
+      (0..23).map do |hour|
+        ret = [hour]
+        ret << (on_hours.include?(hour) ? 'ON' : 'OFF')
+        ret
+      end.to_h
+    end
+
     def to_instance_based_schedule(weekly_schedule)
       result = {}
       weekly_schedule.keys.each do |day|

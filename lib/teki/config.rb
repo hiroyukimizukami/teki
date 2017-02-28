@@ -100,27 +100,16 @@ module Teki
         with(sunday: sunday, monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday)
       end
 
-      def keys
-        [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday]
-      end
-
-      def get(sym)
-        case(sym)
-        when :sunday
-          self.sunday
-        when :monday
-          self.monday
-        when :tuesday
-          self.tuesday
-        when :wednesday
-          self.wednesday
-        when :thursday
-          self.thursday
-        when :friday
-          self.friday
-        when :saturday
-          self.saturday
-        end
+      def to_h
+        {
+          sunday: sunday,
+          monday: monday,
+          tuesday: tuesday,
+          wednesday: wednesday,
+          thursday: thursday,
+          friday: friday,
+          saturday: saturday,
+        }
       end
 
       def all

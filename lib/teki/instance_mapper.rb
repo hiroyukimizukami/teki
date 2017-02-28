@@ -9,40 +9,38 @@ module Teki
       end
     end
 
-    def complement_hours(on_hours)
-      (0..23).map do |hour|
-        ret = [hour]
-        ret << (on_hours.include?(hour) ? 'ON' : 'OFF')
-        ret
-      end.to_h
-    end
-
     def to_instance_based_schedule(weekly_schedule)
       result = {}
-      weekly_schedule.keys.each do |day|
-        schedule = to_instance_based_day_schedule(weekly_schedule.get(day))
-        next if schedule.nil?
 
-        schedule.each do |k, v|
-          result[k] = {} if result[k].nil?
-          result[k][day] = [] if result[k][day].nil?
-          result[k][day] << v
-          result[k][day].flatten!
+      weekly_schedule.to_h.each do |day, day_schedule|
+        next if day_schedule.nil?
+        schedule = to_instance_based_schedule(day_schedule)
+        schedule.each do |instance_id, hours|
+          result[instance_id] = {} if result[instance_id].nil?
+          result[instance_id][day] = [] if result[instance_id][day].nil?
+          result[instance_id][day] << hours
+          result[instance_id][day].flatten!
         end
       end
       result
     end
 
     def to_instance_based_day_schedule(day_schedule)
-      return if day_schedule.nil?
+      return [] if day_schedule.nil?
       result = {}
-      day_schedule.map do |time, instances|
+      day_schedule.each do |time, instances|
         instances.each do |instance|
           result[instance.instance_id] = [] unless result[instance.instance_id]
           result[instance.instance_id] << time.hour
         end
       end
       result
+    end
+
+    def assign_instance(weekly_schedule, instances)
+      prioritized = prioritize(instances)
+      weekly_schedule.to_h.each do |day|
+      end
     end
 
     def assign_instance(day_schedule, instances)

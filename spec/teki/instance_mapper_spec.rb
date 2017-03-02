@@ -12,7 +12,7 @@ describe ::Teki::InstanceMapper do
     let(:key_time2) { Time.parse('2017-02-21 01:00:00 +00:00') }
     let(:key_time3) { Time.parse('2017-02-24 03:00:00 +00:00') }
     let(:monday_schedule) { { key_time1 => [a1, c1], key_time2 => [a1] } }
-    let(:friday_schedule) { { key_time3 => [a1, c1, a2, c2]} }
+    let(:friday_schedule) { { key_time3 => [a1, c1, a2, c2] } }
     let(:weekly_schedule) do
       Teki::Config::WeeklySchedule.create(
         sunday: nil,
@@ -21,7 +21,7 @@ describe ::Teki::InstanceMapper do
         wednesday: nil,
         thursday: nil,
         friday: friday_schedule,
-        saturday: nil
+        saturday: nil,
       )
     end
 

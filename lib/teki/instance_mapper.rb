@@ -14,12 +14,11 @@ module Teki
 
       weekly_schedule.to_h.each do |day, day_schedule|
         next if day_schedule.nil?
-        schedule = to_instance_based_schedule(day_schedule)
+        schedule = to_instance_based_day_schedule(day_schedule)
         schedule.each do |instance_id, hours|
           result[instance_id] = {} if result[instance_id].nil?
           result[instance_id][day] = [] if result[instance_id][day].nil?
-          result[instance_id][day] << hours
-          result[instance_id][day].flatten!
+          result[instance_id][day] += hours
         end
       end
       result

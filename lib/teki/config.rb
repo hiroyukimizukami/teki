@@ -58,8 +58,9 @@ module Teki
 
     def self.create_week_start_time(timezone)
       now = Time.now.utc
-      day = now.day - now.wday
-      Time.new(now.year, now.month, day, 0, 0, 0, timezone)
+      unixtime = now.to_i
+      start = Time.at(unixtime - now.wday * 24 * 60 * 60).utc
+      Time.new(start.year, start.month, start.day, 0, 0, 0, timezone)
     end
 
     def self.create_time(base_time, wday, hour)

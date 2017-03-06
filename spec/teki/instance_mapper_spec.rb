@@ -1,6 +1,33 @@
 require 'spec_helper'
 
 describe ::Teki::InstanceMapper do
+  describe 'to_time_based_autoscaling_param' do
+    subject { described_class.new.to_time_based_autoscaling_param(params) }
+
+    let(:params) {
+      {
+        'i001' => {
+          monday: [0, 1],
+          friday: [3],
+        },
+        'i002' => {
+          monday: [0],
+          friday: [3],
+        },
+        'i003' => {
+          friday: [3],
+        },
+        'i004' => {
+          friday: [3],
+        },
+      }
+    }
+
+    it 'returns autoscaling schedule' do
+      expect(subject).to eq(nil)
+    end
+  end
+
   describe 'to_instance_based_schedule' do
     subject { described_class.new.to_instance_based_schedule(weekly_schedule) }
 

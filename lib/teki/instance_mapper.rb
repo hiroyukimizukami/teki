@@ -4,8 +4,9 @@ module Teki
     end
 
     def to_time_based_autoscaling_param(instance_setting)
-      instance_setting.map do |instance_id, weekly_schedule|
-
+      # TODO 時刻を23時間分埋める処理をどこかにかく
+      instance_setting.map do |instance_id, weekly_setting|
+        ::Teki::Aws::TimeBasedSchedule.create(instance: instance_id, weekly_setting: weekly_setting)
       end
     end
 

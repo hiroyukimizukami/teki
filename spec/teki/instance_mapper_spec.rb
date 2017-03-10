@@ -69,20 +69,32 @@ describe ::Teki::InstanceMapper do
   end
 
   describe 'assign_instance' do
-    subject { described_class.new.assign_instance(day_schedule, instances) }
+    subject { described_class.new.assign_instance(weekly_schedule, instances) }
 
-    let(:a1) { create(:aws_instance, hostname: 'a1', availability_zone: 'ap-northeast-1a') }
-    let(:a2) { create(:aws_instance, hostname: 'a2', availability_zone: 'ap-northeast-1a') }
-    let(:a3) { create(:aws_instance, hostname: 'a3', availability_zone: 'ap-northeast-1a') }
-    let(:a4) { create(:aws_instance, hostname: 'a4', availability_zone: 'ap-northeast-1a') }
     context 'basic' do
-      let(:key_time1) { Time.parse('2017-02-21 00:00:00 +00:00') }
-      let(:key_time2) { Time.parse('2017-02-21 01:00:00 +00:00') }
-      let(:day_schedule) { {key_time1 => 3, key_time2 => 1} }
-      let(:instances) { [a1, a2, a3, a4 ]  }
+      let(:mon_time1) { Time.parse('2017-02-13 00:00:00 +00:00') }
+      let(:mon_time2) { Time.parse('2017-02-13 01:00:00 +00:00') }
+      let(:tue_time1) { Time.parse('2017-02-13 22:00:00 +00:00') }
+      let(:tue_time2) { Time.parse('2017-02-13 23:00:00 +00:00') }
+      let(:wed_time1) { Time.parse('2017-02-13 23:00:00 +00:00') }
+      let(:instances) { create_list(:aws_instance, 6) }
+      let(:weekly_schedule) do
+        ::Teki::Config::WeeklySchedule.create(
+          sunday: nil,
+          monday: { mon_time1 => 1, mon_time2 => 2 },
+          tuesday: { tue_time1 => 2, tue_time2 => 3 },
+          wednesday: { wed_time1 => 4 },
+          thursday: nil,
+          friday: nil,
+          saturday: nil,
 
-      it { expect(subject[key_time1]).to eq([a1, a2, a3]) }
-      it { expect(subject[key_time2]).to eq([a1]) }
+        )
+      end
+      it { expect(subject[:monday][mon_time1].size).to eq(1) }
+      it { expect(subject[:monday][mon_time2].size).to eq(2) }
+      it { expect(subject[:tuesday][tue_time1].size).to eq(2) }
+      it { expect(subject[:tuesday][tue_time2].size).to eq(3) }
+      it { expect(subject[:wednesday][wed_time1].size).to eq(4) }
     end
 
     context 'instance count shorage' do

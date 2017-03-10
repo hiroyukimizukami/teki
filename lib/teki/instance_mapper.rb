@@ -5,7 +5,7 @@ module Teki
 
     def to_time_based_autoscaling_param(instance_setting)
       instance_setting.map do |instance_id, weekly_schedule|
-
+        # TODO ::Teki::Aws::WeeklyScheduleに変換する
       end
     end
 
@@ -38,14 +38,14 @@ module Teki
 
     def assign_instance(weekly_schedule, instances)
       prioritized = prioritize(instances)
-      weekly_schedule.to_h.each do |day|
-      end
-    end
+      weekly_schedule.to_h.map do |wday, day_schedule|
+        next [wday, nil] if day_schedule.nil?
 
-    def assign_instance(day_schedule, instances)
-      day_schedule.map do |time, count|
-        raise 'instance count shortage' if count > instances.count
-        [time, instances[0...count]]
+        schedule = day_schedule.map do |time, count|
+          raise 'instance count shortage' if count > prioritized.count
+          [time, prioritized[0...count]]
+        end.to_h
+        [wday, schedule]
       end.to_h
     end
 

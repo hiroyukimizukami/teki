@@ -72,54 +72,5 @@ module Teki
       range = range_string.split('-').map { |s| s.to_i }
       range[0]..range[1]
     end
-
-    # いらないかも..
-    def self.to_instance_count_by_hour(schedules)
-      result = {}
-      schedules.each do |schedule|
-        Teki::DateUtils.step(schedule[:time_range], Teki::DateUtils::HOUR) do |time|
-          result[time] = result[time].nil? ? schedule[:count] : result[time] + schedule[:count]
-        end
-      end
-      result
-    end
-
-    class Entry < ::Value.new(:timezone, :stack_name, :layers)
-      def self.create(timezone:, stack_name:, layers:)
-        with(timezone: timezone, stack_name: stack_name, layers: layers)
-      end
-    end
-
-    class Layer < ::Value.new(:name, :weekly_schedule)
-      def self.create(name:, weekly_schedule:)
-        with(name: name, weekly_schedule: weekly_schedule)
-      end
-    end
-
-    class WeeklySchedule < ::Value.new(:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday)
-      def self.create(sunday:, monday:, tuesday:, wednesday:, thursday:, friday:, saturday:)
-        with(sunday: sunday, monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday)
-      end
-
-      def to_h
-        {
-          sunday: sunday,
-          monday: monday,
-          tuesday: tuesday,
-          wednesday: wednesday,
-          thursday: thursday,
-          friday: friday,
-          saturday: saturday,
-        }
-      end
-
-      def all
-        result = {}
-        [sunday, monday, tuesday, wednesday, thursday, friday, saturday].each do |e|
-          result.merge!(e) if e
-        end
-        result
-      end
-    end
   end
 end

@@ -11,6 +11,12 @@ module Teki
       end
     end
 
+    def self.supplement_wday(hash)
+      [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday].map do |wday|
+        [wday, hash[wday] ]
+      end.to_h
+    end
+
     def self.to_weekday(wday)
       case wday
       when 0 then

@@ -1,18 +1,21 @@
 module Teki
   class InstanceMapper
     def map(weekly_schedule, instances)
+      assigned = assign_instance(weekly_schedule, instances)
+      instance_setting = to_instance_based_schedule(assigned)
+      to_time_based_autoscaling_setting(instance_setting)
     end
 
-    def to_time_based_autoscaling_param(instance_setting)
-      instance_setting.map do |instance_id, weekly_schedule|
-        # TODO ::Teki::Aws::WeeklyScheduleに変換する
+    def to_time_based_autoscaling_setting(instance_setting)
+      instance_setting.map do |instance_id, schedule|
+        ::Teki::Aws::TimeBasedSchedule.create(instance: instance_id, weekly_setting: schedule)
       end
     end
 
     def to_instance_based_schedule(weekly_schedule)
       result = {}
 
-      weekly_schedule.to_h.each do |day, day_schedule|
+      weekly_schedule.each do |day, day_schedule|
         next if day_schedule.nil?
         schedule = to_instance_based_day_schedule(day_schedule)
         schedule.each do |instance_id, hours|

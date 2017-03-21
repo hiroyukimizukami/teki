@@ -1,4 +1,5 @@
 require "teki/version"
+Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*.rb")).each { |f| require f }
 
 module Teki
   def self.setup(key:, secret:, region:, config_path:, dry_run: true)

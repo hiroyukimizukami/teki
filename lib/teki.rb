@@ -1,4 +1,6 @@
 require "teki/version"
+require 'aws-sdk'
+require 'values'
 
 module Teki
   def self.setup(key:, secret:, region:, config_path:, dry_run: true)

@@ -18,8 +18,7 @@ module Teki
     end
 
     def self.parse_layer(base_time, name, weekly_setting)
-      weekly_schedule = parse_weekly_schedule(base_time, weekly_setting)
-      ::Teki::Config::Layer.create(name: name, weekly_schedule: weekly_schedule)
+      ::Teki::Config::Layer.create(name: name, weekly_schedule: parse_weekly_schedule(base_time, weekly_setting))
     end
 
     def self.parse_weekly_schedule(base_time, weekly_setting)

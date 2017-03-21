@@ -18,8 +18,8 @@ module Teki
         layers
       end
 
-      def set_time_based_auto_scaling(weekly_schedule)
-        puts "TODO impl"
+      def set_time_based_auto_scaling(time_based_schedule)
+        client.set_time_based_auto_scaling(time_based_schedule)
       end
 
       private

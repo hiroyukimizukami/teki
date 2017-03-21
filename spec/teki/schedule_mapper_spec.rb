@@ -1,9 +1,6 @@
 require 'spec_helper'
 
-describe ::Teki::InstanceMapper do
-  describe 'to_time_based_autoscaling_setting' do
-  end
-
+describe ::Teki::ScheduleMapper do
   describe 'to_instance_based_schedule' do
     subject { described_class.new.to_instance_based_schedule(weekly_schedule) }
 

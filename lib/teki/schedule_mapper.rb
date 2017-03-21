@@ -3,7 +3,19 @@ module Teki
     def assign_schedule_to_instance(instances, weekly_schedule)
       assigned = assign_instance(weekly_schedule, instances)
       instance_setting = to_instance_based_schedule(assigned)
-      to_time_based_autoscaling_setting(instance_setting)
+      time_based_schedule = to_time_based_autoscaling_setting(instance_setting)
+      supplement_no_schedule_instances(instances, time_based_schedule)
+    end
+
+    def supplement_no_schedule_instances(instances, time_based_schedules)
+      instances.map do |instance|
+        schedule = time_based_schedules.select { |s| s.instance == instance.instance_id }.first
+        if schedule.nil?
+          ::Teki::Aws::TimeBasedSchedule.create(instance: instance.instance_id, weekly_setting: {})
+        else
+          schedule
+        end
+      end
     end
 
     def to_time_based_autoscaling_setting(instance_setting)

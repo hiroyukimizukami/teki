@@ -1,8 +1,10 @@
+require 'json'
+
 module Teki
   module Config
     def self.load(path)
       data = open(path) do |io|
-        JSON.load(io, nil, symbolize_names: true)
+        ::JSON.load(io, nil, symbolize_names: true)
       end
 
       base_time = create_week_start_time(data[:timezone])

@@ -4,7 +4,8 @@ describe Teki::Aws::Formatter do
   describe 'format' do
     subject { described_class.format(params) }
     let(:params) do
-      Teki::Aws::TimeBasedSchedule.create(
+      [
+        Teki::Aws::TimeBasedSchedule.create(
         instance: 'i001',
         weekly_setting: {
           sunday: [0, 1, 2],
@@ -16,16 +17,17 @@ describe Teki::Aws::Formatter do
           saturday: [0, 1, 2, 3, 4, 5, 6],
         }
       )
+      ]
     end
 
-    it { expect(subject[:instance_id]).to eq(params.instance) }
-    it { expect(subject[:auto_scaling_schedule][:sunday].count).to eq(24) }
-    it { expect(subject[:auto_scaling_schedule][:monday].count).to eq(24) }
-    it { expect(subject[:auto_scaling_schedule][:tuesday].count).to eq(24) }
-    it { expect(subject[:auto_scaling_schedule][:wednesday].count).to eq(24) }
-    it { expect(subject[:auto_scaling_schedule][:thursday].count).to eq(24) }
-    it { expect(subject[:auto_scaling_schedule][:friday].count).to eq(24) }
-    it { expect(subject[:auto_scaling_schedule][:saturday].count).to eq(24) }
+    it { expect(subject[0][:instance_id]).to eq(params.instance) }
+    it { expect(subject[0][:auto_scaling_schedule][:sunday].count).to eq(24) }
+    it { expect(subject[0][:auto_scaling_schedule][:monday].count).to eq(24) }
+    it { expect(subject[0][:auto_scaling_schedule][:tuesday].count).to eq(24) }
+    it { expect(subject[0][:auto_scaling_schedule][:wednesday].count).to eq(24) }
+    it { expect(subject[0][:auto_scaling_schedule][:thursday].count).to eq(24) }
+    it { expect(subject[0][:auto_scaling_schedule][:friday].count).to eq(24) }
+    it { expect(subject[0][:auto_scaling_schedule][:saturday].count).to eq(24) }
   end
 
   describe 'format_hours' do

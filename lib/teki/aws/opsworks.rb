@@ -29,7 +29,7 @@ module Teki
           ::Aws::OpsWorks::Stack.new(s.stack_id, client: client)
         end
         stack = stacks.select { |s| s.name == name }.first
-        raise NotFoundError, "stack named: #{stack_name}" unless stack
+        raise NotFoundError, "stack named: #{name}" unless stack
         stack
       end
 

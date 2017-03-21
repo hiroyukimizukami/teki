@@ -7,7 +7,7 @@ module Teki
 
       base_time = create_week_start_time(data[:timezone])
       layers = data[:layers].map do |name, weekly_setting|
-        parse_layer(base_time, name, weekly_setting)
+        parse_layer(base_time, name.to_s, weekly_setting)
       end
 
       ::Teki::Config::Entry.create(

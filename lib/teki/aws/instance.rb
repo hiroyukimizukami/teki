@@ -3,8 +3,6 @@ require 'values'
 module Teki
   module Aws
     class Instance < ::Value.new(:instance_id, :availability_zone, :hostname, :instance_type, :auto_scaling_type)
-
-      # Aws::OpsWorks::Types::DescribeInstancesResult
       def self.create(described_instance)
         with(instance_id: described_instance.instance_id,
              availability_zone: described_instance.availability_zone,

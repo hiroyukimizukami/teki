@@ -1,4 +1,6 @@
 require "teki/version"
+require 'aws-sdk'
+require 'values'
 Dir.glob(File.join(File.dirname(__FILE__), "../lib/**/*.rb")).each { |f| require f }
 
 module Teki

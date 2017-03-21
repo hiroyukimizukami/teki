@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["hiroyukimizukami"]
   spec.email         = ["majestaaa@gmail.com"]
 
-  spec.summary       = %q{TODO: Time Based Instance Congigurator for AWS Opsworks}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{Time Based Instance Congigurator for AWS Opsworks}
+  spec.description   = %q{Oops}
   spec.homepage      = "https://github.com/hiroyukimizukami/teki"
   spec.license       = "MIT"
 

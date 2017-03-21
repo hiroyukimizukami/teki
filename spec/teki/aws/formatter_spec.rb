@@ -20,7 +20,7 @@ describe Teki::Aws::Formatter do
       ]
     end
 
-    it { expect(subject[0][:instance_id]).to eq(params.instance) }
+    it { expect(subject[0][:instance_id]).to eq(params[0].instance) }
     it { expect(subject[0][:auto_scaling_schedule][:sunday].count).to eq(24) }
     it { expect(subject[0][:auto_scaling_schedule][:monday].count).to eq(24) }
     it { expect(subject[0][:auto_scaling_schedule][:tuesday].count).to eq(24) }

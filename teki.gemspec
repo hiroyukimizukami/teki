@@ -35,6 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "factory_girl", "~> 4.8"
   spec.add_development_dependency "faker", "~> 1.7"
-  spec.add_development_dependency "aws-sdk", "~> 2"
-  spec.add_development_dependency "values", "~> 1.8"
+  spec.add_dependency "aws-sdk", "~> 2"
+  spec.add_dependency "values", "~> 1.8"
 end

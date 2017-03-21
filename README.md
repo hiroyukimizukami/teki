@@ -1,125 +1,41 @@
-# README #
+# Teki
 
-### What is this repository for? ###
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/teki`. To experiment with that code, run `bin/console` for an interactive prompt.
 
- OpsworksのTimebaseインスタンスの設定を反映する
+TODO: Delete this and the text above, and describe your gem
 
- ```
-lib/runner key, secret, config
-lib/runner key, secret, config --dry-run
- ```
+## Installation
 
-## Config Format
+Add this line to your application's Gemfile:
 
-```
-{
-  "time_zone": '+09:00',
-  "stack_name": 'example.com',
-  "layers" : {
-    "api-server": {
-      "mon": [
-        {
-          "count": 1,
-          "time_range": 0-9
-        },
-        {
-          "count": 2,
-          "time_range": 22-23
-        }
-      ],
-      "tue": [
-        {
-          "count": 4,
-          "time_range": 18-23
-        }
-      ]
-    }
-  }
-}
-
+```ruby
+gem 'teki'
 ```
 
-# メモ
-## Timezone付きのTimebase設定を -> UTCに変換するあたり
-入力形式
-```
-input = { wday: [{time_range(jst): instance_count}], ...}
-```
-※time_rangeは年月月日までの精度でそれ以下は00:00:00固定
+And then execute:
 
- wdayのキーをすべてばらして配列にする
- ```
- [ {time_range(jst): instance_count}...]
- ```
+    $ bundle
 
- 1時間単位のインスタンス数の連想配列にする(時間が重複しているものはインスタンス数を合算する)
- ```
- [{time_range(jst): instance_count}...]
- ```
+Or install it yourself as:
 
-timezoneを UTCに変換
- ```
- [{time_range(utc): instance_count}...]
- ```
+    $ gem install teki
 
- wday毎をキーとした配列にする
- ```
- [ 0: [{time_range(utc): instance_count}...], 1: [...]}
- ```
+## Usage
 
-## WeeklyScheduleからInstance毎のスケジュールにするあたり
+TODO: Write usage instructions here
 
-WeeklySchedule
-```
-{
-  monday: {
-    '2017-02-14 00:00:00' => 4,
-    '2017-02-14 01:00:00' => 4,
-    '2017-02-14 02:00:00' => 2,
-  },
-  tue : {
-  }
-}
-```
+## Development
 
-インスタンスに優先順位をつけた上でスケジュールに紐付ける
-```
-{
-  monday: {
-    '2017-02-14 00:00:00' => [i000, i001, i002, i003],
-    '2017-02-14 01:00:00' => [i000, i001, i002, i003],
-    '2017-02-14 02:00:00' => [i000, i001],
-  },
-  tue : {
-  }
-}
-```
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-1日内でインスタンス毎に時刻を紐付けるように変換
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-```
-{
-  monday: {
-    i000 => ['2017-02-14 00:00:00', '2017-02-14 01:00:00', '2017-02-14 02:00:00'],
-    i001 => ['2017-02-14 00:00:00', '2017-02-14 01:00:00', '2017-02-14 02:00:00'],
-    i002 => ['2017-02-14 00:00:00', '2017-02-14 01:00:00'],
-    i003 => ['2017-02-14 00:00:00', '2017-02-14 01:00:00'],
-  },
-  tue {
-  }
-```
-キーをhourのみに変更して24時間単位にする
-(aws sdkの仕様上、明示的にofflineに変更したいときはoffを指定する必要がある)
-```
-{
-  monday: {
-    i000 => {0 => 'on', 1 => 'on', 2 => 'on', 3 => 'off'...},
-    i001 => {0 => 'on', 1 => 'on', 2 => 'on', 3 => 'off'...},
-    i002 => {0 => 'on', 1 => 'on', 2 => 'off', 3 => 'off'...},
-    i003 => {0 => 'on', 1 => 'on', 2 => 'off', 3 => 'off'...},
-  },
-```
+## Contributing
 
-# TODO
-* instance_mapperの戻り値型
-* ↑からAws::OpsWorks::Clientset_time_based_auto_scalingが食えるHashに変換するプログラム
+Bug reports and pull requests are welcome on GitHub at https://github.com/hiroyukimizukami/teki. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+

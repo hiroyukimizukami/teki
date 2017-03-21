@@ -1,19 +1,21 @@
 module Teki
   class InstanceMapper
     def map(weekly_schedule, instances)
+      assigned = assign_instance(weekly_schedule, instances)
+      instance_setting = to_instance_based_schedule(assigned)
+      to_time_based_autoscaling_setting(instance_setting)
     end
 
-    def to_time_based_autoscaling_param(instance_setting)
-      # TODO 時刻を23時間分埋める処理をどこかにかく
-      instance_setting.map do |instance_id, weekly_setting|
-        ::Teki::Aws::TimeBasedSchedule.create(instance: instance_id, weekly_setting: weekly_setting)
+    def to_time_based_autoscaling_setting(instance_setting)
+      instance_setting.map do |instance_id, schedule|
+        ::Teki::Aws::TimeBasedSchedule.create(instance: instance_id, weekly_setting: schedule)
       end
     end
 
     def to_instance_based_schedule(weekly_schedule)
       result = {}
 
-      weekly_schedule.to_h.each do |day, day_schedule|
+      weekly_schedule.each do |day, day_schedule|
         next if day_schedule.nil?
         schedule = to_instance_based_day_schedule(day_schedule)
         schedule.each do |instance_id, hours|
@@ -39,14 +41,14 @@ module Teki
 
     def assign_instance(weekly_schedule, instances)
       prioritized = prioritize(instances)
-      weekly_schedule.to_h.each do |day|
-      end
-    end
+      weekly_schedule.to_h.map do |wday, day_schedule|
+        next [wday, nil] if day_schedule.nil?
 
-    def assign_instance(day_schedule, instances)
-      day_schedule.map do |time, count|
-        raise 'instance count shortage' if count > instances.count
-        [time, instances[0...count]]
+        schedule = day_schedule.map do |time, count|
+          raise 'instance count shortage' if count > prioritized.count
+          [time, prioritized[0...count]]
+        end.to_h
+        [wday, schedule]
       end.to_h
     end
 

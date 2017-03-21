@@ -18,6 +18,20 @@ describe Teki::DateUtils do
     end
   end
 
+  describe 'supplement_wday' do
+    subject { described_class.supplement_wday(param) }
+    let(:param) { { monday: 1, friday: 2 } }
+    it 'supplements missing wday' do
+      expect(subject.key?(:sunday)).to eq(true)
+      expect(subject[:monday]).to eq(1)
+      expect(subject.key?(:tuesday)).to eq(true)
+      expect(subject.key?(:wednesday)).to eq(true)
+      expect(subject.key?(:thursday)).to eq(true)
+      expect(subject[:friday]).to eq(2)
+      expect(subject.key?(:saturday)).to eq(true)
+    end
+  end
+
   describe 'to_weekday' do
     context do
       it 'parse wday value to symbol' do
